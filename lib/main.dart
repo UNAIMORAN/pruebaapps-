@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'pages/login_page.dart';
 import 'pages/todos_page.dart';
+import 'scheme_registrar.dart';
 import 'supabase_config.dart';
 
 Future<void> main() async {
@@ -14,6 +15,10 @@ Future<void> main() async {
     url: supabaseUrl,
     anonKey: supabaseAnonKey,
   );
+
+  // En Windows, registra el esquema de URL para el login con Google.
+  // En el resto de plataformas no hace nada.
+  await registerOAuthScheme();
 
   runApp(const TodoApp());
 }

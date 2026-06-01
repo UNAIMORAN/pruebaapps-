@@ -38,6 +38,9 @@ dependencies:
   # Cliente oficial de Supabase para Flutter: auth + base de datos + realtime.
   supabase_flutter: ^2.8.0
 
+  # Solo se usa en Windows: registra el esquema de URL para el login con Google.
+  win32_registry: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
