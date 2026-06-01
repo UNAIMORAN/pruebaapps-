@@ -26,6 +26,42 @@ lib/
     └── todos_page.dart          # Lista en tiempo real: añadir, completar, borrar
 ```
 
+## 🧩 Usar este proyecto como plantilla para uno nuevo
+
+Este repo está marcado como **template repository** en GitHub, así que puedes crear
+proyectos nuevos a partir de él en segundos.
+
+1. **Crear el repo nuevo**: en GitHub, pulsa **"Use this template" → Create a new repository**.
+   Dale un nombre y créalo.
+2. **Clónalo** en tu equipo y entra en la carpeta:
+   ```bash
+   git clone https://github.com/TU-USUARIO/TU-REPO.git
+   cd TU-REPO
+   ```
+3. **Renombrar la app** (nombre, package/bundle ID y esquema de URL). Usamos la
+   herramienta estándar [`rename`](https://pub.dev/packages/rename) para el grueso y
+   un script propio para el esquema de Google:
+   ```bash
+   dart pub global activate rename
+   dart pub global run rename setAppName  --value "Mi App Nueva"
+   dart pub global run rename setBundleId --value com.miempresa.miapp
+   ```
+   ```powershell
+   # En Windows (PowerShell): actualiza el esquema OAuth para que coincida con el bundle ID
+   ./tools/cambiar_esquema_oauth.ps1 -NuevoEsquema com.miempresa.miapp
+   ```
+4. **Nuevo proyecto de Supabase**: sigue los pasos de *"Cómo ejecutarlo"* de abajo
+   (crear proyecto, ejecutar el SQL, copiar `supabase_config.example.dart` a
+   `supabase_config.dart` con tus nuevas credenciales).
+5. **Instalar y ejecutar**:
+   ```bash
+   flutter pub get
+   flutter run
+   ```
+
+> 💡 Si vas a usar login con Google, recuerda actualizar también la *Redirect URL* en
+> Supabase al nuevo esquema (`com.miempresa.miapp://login-callback/`).
+
 ## 🚀 Cómo ejecutarlo
 
 ### 1. Requisitos
