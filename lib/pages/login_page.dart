@@ -1,7 +1,13 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../main.dart';
+
+// Esquema de URL al que vuelve el navegador tras el login con Google en
+// móvil y escritorio. Debe coincidir con lo configurado en Android/iOS y
+// en la lista de "Redirect URLs" de Supabase.
+const String _oauthRedirect = 'com.example.pruebaapps://login-callback/';
 
 /// Pantalla de inicio de sesión y registro con email + contraseña.
 class LoginPage extends StatefulWidget {
@@ -62,6 +68,26 @@ class _LoginPageState extends State<LoginPage> {
       _showMessage('Ocurrió un error inesperado.');
     } finally {
       if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  /// Inicia sesión con Google (OAuth).
+  ///
+  /// Abre el navegador para que el usuario elija su cuenta. Al terminar, vuelve
+  /// a la app y la sesión llega por `onAuthStateChange` (el AuthGate cambia solo
+  /// de pantalla), igual que con el login de email.
+  Future<void> _signInWithGoogle() async {
+    try {
+      await supabase.auth.signInWithOAuth(
+        OAuthProvider.google,
+        // En web no hace falta esquema: vuelve a la URL actual de la web.
+        // En móvil/escritorio usamos el esquema propio de la app.
+        redirectTo: kIsWeb ? null : _oauthRedirect,
+      );
+    } on AuthException catch (error) {
+      _showMessage(error.message);
+    } catch (error) {
+      _showMessage('No se pudo iniciar sesión con Google.');
     }
   }
 
@@ -126,6 +152,23 @@ class _LoginPageState extends State<LoginPage> {
                 OutlinedButton(
                   onPressed: _loading ? null : _signUp,
                   child: const Text('Registrarse'),
+                ),
+                const SizedBox(height: 16),
+                const Row(
+                  children: [
+                    Expanded(child: Divider()),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Text('o'),
+                    ),
+                    Expanded(child: Divider()),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton.icon(
+                  onPressed: _loading ? null : _signInWithGoogle,
+                  icon: const Icon(Icons.login),
+                  label: const Text('Continuar con Google'),
                 ),
               ],
             ),

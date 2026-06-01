@@ -45,5 +45,18 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Captura la redirección del login con Google (OAuth).
+	     El esquema debe coincidir con _oauthRedirect en login_page.dart. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.example.pruebaapps</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
